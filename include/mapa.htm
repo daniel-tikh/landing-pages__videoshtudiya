@@ -1,0 +1,21 @@
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+
+<script>
+var en_mapa;
+ymaps.ready(function () {
+	en_mapa = new ymaps.Map("en_mapa", {
+		center: [55.80099009182649,37.63824842824171],
+		zoom: 17,
+		controls: ["zoomControl", "fullscreenControl"]
+	});
+	myPlacemark = new ymaps.Placemark([55.80099009182649,37.63824842824171], {}, {
+		iconLayout: "default#image",
+		iconImageHref: "/images/icons/mapa-pin.svg",
+		iconImageSize: [50, 50],
+		iconImageOffset: [-25, -50],
+		iconContentOffset: [150, 150],
+	});
+	en_mapa.behaviors.disable("scrollZoom");
+	en_mapa.geoObjects.add(myPlacemark);
+});
+</script>

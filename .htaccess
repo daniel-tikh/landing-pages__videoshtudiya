@@ -1,0 +1,13 @@
+# RewriteEngine On
+# RewriteCond %{ENV:HTTPS} !on
+# RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} ^www.xn--b1aeadnd4b6aj2cze.xn--p1ai$ [NC]
+# RewriteRule ^(.*)$ https://xn--b1aeadnd4b6aj2cze.xn--p1ai/$1 [R=301,L]
+
+# ErrorDocument 403 /
+# ErrorDocument 404 /
+# ErrorDocument 500 /
+
+AddDefaultCharset utf-8

@@ -1,0 +1,37 @@
+<!-- Форма "Арендовать студию" -->
+
+<div id="zayavka">
+
+<!--noindex-->
+<?php echo "<"; ?><?php echo "for"; ?><?php echo "m class='formularz' method='post'>"; ?>
+<?php echo "<"; ?><?php echo "!--"; ?><form action="form.php"></form>-->
+<?php $secret = date('Yz'); $secretBefore = date('Yz', time()-86400); if (isset($_POST['field$secretBefore'])){$secret = $secretBefore;} ?>
+
+<p>Арендовать видеостудию</p>
+<p>Оставьте заявку, и&nbsp;наш&nbsp;менеджер свяжется с&nbsp;вами в&nbsp;ближайшее время</p>
+
+<div class="en_campos required">
+<input id="lsdf7B4c0<?php echo $secret; ?>" class="en_nombre" type="text" name="lsdf7B4c0<?php echo $secret; ?>" required autocomplete="off" minlength="2" maxlength="140" placeholder="Представьтесь, пожалуйста" title="">
+<label for="lsdf7B4c0<?php echo $secret; ?>"><span>Представьтесь, пожалуйста</span></label>
+</div>
+
+<div class="en_campos required">
+<input id="s1f3hdfs0<?php echo $secret; ?>" class="en_numero" type="tel" name="s1f3hdfs0<?php echo $secret; ?>" required autocomplete="off" placeholder="Укажите ваш телефон" title="">
+<label for="s1f3hdfs0<?php echo $secret; ?>"><span>Ваш номер телефона</span></label>
+</div>
+
+<div class="en_zgodnoscblok">
+<input id="zgodnosc0" type="checkbox" name="zgodnosc0" required value="agree" title="">
+<label for="zgodnosc0"><span>Я&nbsp;подтверждаю своё&nbsp;согласие на&nbsp;обработку моих&nbsp;персональных данных и&nbsp;соглашаюсь с&nbsp;условиями <a href="/politika-konfidencialnosti/" data-fancybox="" data-type="iframe" title="">Политики конфиденциальности</a> данного сайта</span></label>
+</div>
+
+<input class="stronaadres" type="hidden" name="url<?php echo $secret; ?>">
+<input class="stronatytul" type="hidden" name="title<?php echo $secret; ?>">
+<input type="text" name="captcha" autocomplete="off" minlength="4" maxlength="20" placeholder="Введите код с&nbsp;картинки" title="">
+
+<div class="en_knopka en_media"><p>Отправить</p></div>
+
+<?php echo "<"; ?><?php echo "/for"; ?><?php echo "m>"; ?>
+<!--/noindex-->
+
+</div>

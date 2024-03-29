@@ -1,0 +1,18 @@
+User-agent: *
+
+Disallow: *.jpg
+Disallow: *.png
+Disallow: *.gif
+Disallow: *.svg
+Disallow: *.webp
+Disallow: *.pdf
+Disallow: /images/
+Disallow: /include/
+Disallow: /politika-konfidencialnosti/
+Disallow: /pravovaya-informaciya/
+
+Allow: /images/icons/favicon.png
+
+Host: xn--b1aeadnd4b6aj2cze.xn--p1ai
+
+Crawl-delay: 10

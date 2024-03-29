@@ -1,0 +1,244 @@
+<script src="/include/js/jquery.js"></script>
+<script src="/include/js/fancybox.js"></script>
+<script src="/include/js/slick.js"></script>
+<script src="/include/js/maskedinput.js"></script>
+
+<script>
+
+<!-- Загрузка страницы -->
+
+$(window).on('load', function () {
+    var $preloader = $('#en_preloader'),
+    $svg_anm = $preloader.find('.en_preloader__svg');
+    $svg_anm.fadeOut();
+    $preloader.delay(500).fadeOut('slow');
+});
+
+<!-- Главное меню (versión desktop) -->
+
+$(function() {    
+  $(window).scroll(function(){
+    if($(this).scrollTop()>81 && !$('.en_menu').hasClass('fixed')){
+      $('.en_menu').addClass('fixed');
+    }
+    if($(this).scrollTop()<80 && $('.en_menu').hasClass('fixed')){
+      $('.en_menu').removeClass('fixed');
+    }
+  });
+});
+
+<!-- Главное меню (versión mobile) -->
+
+$(function() {
+
+  $(window).scroll(function(){
+    if($(this).scrollTop()>81 && !$('.en_openmenu').hasClass('fixed')){
+      $('.en_openmenu').addClass('fixed');
+    }
+    if($(this).scrollTop()<80 && $('.en_openmenu').hasClass('fixed')){
+      $('.en_openmenu').removeClass('fixed');
+    }
+  });
+	
+  $('.en_openmenu, .en_closemenu').click(function() {
+    $('nav').css('display','flex').removeClass('close').toggleClass('open');
+    $('html').toggleClass('en_navmenu');
+    return false;
+  });
+
+  $('.en_menu__items > li > p').each(function() {if ($(this).next().length > 0) $(this).parent().addClass('podmenu');});
+
+  $('.podmenu > p').on('click', function(e) {
+    var count = $(this).data('count');
+    if(!count) {
+      $(this).data('count', 1);
+      e.preventDefault();
+      $(this).next().slideToggle('slow');
+      $(this).parent().siblings().children('ul').slideUp('slow');
+      return false;
+    };
+  });
+
+	$("nav").on('click', '[href*="#"], [href*="javascript:;"]', function() {
+		$('nav').removeClass('close').toggleClass('open');
+		$('html').removeClass('en_navmenu');
+	});
+
+});
+
+<!-- Плавный переход по ссылкам -->
+
+$("nav").on('click', '[href*="#"]', function(e){
+  var w = screen.width;
+  if (w > 1660) {
+    var fixed_offset = 139;
+  }
+  if ((w > 1024) && ( w <= 1660 )) {
+    var fixed_offset = 119;
+  }
+  if (w <= 1024){
+    var fixed_offset = 69;
+  }
+  $('body, html').stop().animate({ scrollTop: $(this.hash).offset().top - fixed_offset}, 1200);
+  e.preventDefault();
+});
+
+<!-- Sólo mantenlo en vertical и дополнительные стили для моб устройств  -->
+
+$(function() {
+  if(/iPhone|iPad|iPod|Android|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    $('body').addClass('en_orientation');
+  };
+});
+
+<!-- Слайдеры  -->
+
+$('#en_fotos').slick({
+  infinite: false,
+  speed: 800,
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1025,
+      settings: {
+        slidesToShow: 3
+      }
+    }
+  ]
+});
+
+<!-- Проверка полей формы -->
+
+$(function() {
+    $(function() {
+        function validate_email(email) {
+            var email = email.trim();
+            var email_validate_regexp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return email_validate_regexp.test(email);
+        }
+
+        var highlight_invalid_input = function() {
+            $('.ksztalt_blad');
+            setTimeout(function(){
+                $('.ksztalt_blad').removeClass('ksztalt_blad');
+            }, 1200);
+        }
+
+        $("input[type='tel']").click(function(){$(this).setCursorPosition(4);}).mask("+7 (999) 999-99-99");
+        $("input[type='tel']").mask("+7 (999) 999-99-99");
+
+        $("input[type='email']").blur(function() {
+            $(this).val($(this).val().trim());
+            ($(this).val() != '' && !validate_email($(this).val())) ? $(this).addClass('ksztalt_blad') : $(this).removeClass('ksztalt_blad');
+            highlight_invalid_input();
+        });
+
+        $(".en_nombre").blur(function() {
+            var name_parts = $(this).val().match(/[a-zA-Zа-яА-Я ]+/ig);
+            if(name_parts != null && name_parts.length > 0) {
+                for (var i in name_parts)
+                    name_parts[i] = name_parts[i].trim();
+                $(this).val(name_parts.join(' '));
+            }
+            ($(this).val().length > 60) ? $(this).addClass('ksztalt_blad') : $(this).removeClass('ksztalt_blad');
+            highlight_invalid_input();
+        });
+
+        $(".en_mensaje").blur(function() {
+            var name_parts = $(this).val().match(/[a-zA-Zа-яА-Я0-9 ,.!?"'@#]+/ig);
+            if(name_parts != null && name_parts.length > 0) {
+                for (var i in name_parts)
+                    name_parts[i] = name_parts[i].trim();
+                $(this).val(name_parts.join(' '));
+            }
+            ($(this).val().length > 600) ? $(this).addClass('ksztalt_blad') : $(this).removeClass('ksztalt_blad');
+            highlight_invalid_input();
+        });
+								
+        $('.stronaadres').val(window.location.href);
+        $('.stronatytul').val(window.document.title);
+
+        $('form').each(function() {
+            var form = $(this),
+                btn = form.find(".en_knopka");
+
+            btn.on('click', function() {
+                form.find('input[required]').each(function() {
+                    if (($(this).val().trim() == '') ||
+                        ($(this).attr('class') == 'en_correo' && !validate_email($(this).val())) ||
+                        ($(this).attr('type') == 'radio' && !$(this).is(":checked")) ||
+                        ($(this).attr('type') == 'checkbox' && !$(this).is(":checked"))){
+
+                        $(this).addClass('ksztalt_blad');
+                    } else {
+                        $(this).removeClass('ksztalt_blad');
+                    }
+                });
+                form.find('textarea[required]').each(function() {
+                    if (($(this).val().trim() == '')){
+                        $(this).addClass('ksztalt_blad');
+                    } else {
+                        $(this).removeClass('ksztalt_blad');
+                    }
+                });
+                highlight_invalid_input();
+                if (form.find('.ksztalt_blad').length > 0) {
+                    return false;
+                } else {
+                    //form.submit();
+                    var params = form.serialize();
+                    $.ajax({
+                      type: "POST",
+                      url:'/include/vse_formy.php',
+                      data:params,
+                      success: function(res) {
+                        if (res.length) {
+                          form.find('input').val('');
+                          form.find('textarea').val('');
+                          $('.fancybox-close-small').click();
+                          $('body').append(res);                          
+                          setTimeout(function() {
+                              $('#respuesta').remove();
+                              window.location.reload(true)
+                          }, 3000);
+        
+                        } 
+                      }
+                    });
+                }
+            })
+        });
+
+    })
+});
+
+<!-- Сервис наверх -->
+
+$(function() {
+  $(window).scroll(function() {
+    if($(this).scrollTop()>100) {
+      $('.en_up').fadeIn();
+    } else {
+      $('.en_up').fadeOut();
+    }
+  });
+  $('.en_up').click(function() {$('body,html').animate({scrollTop:0},1000);});   
+  $('.en_footer__up').click(function() {$('body,html').animate({scrollTop:0},1000);});
+  if(/iPhone|iPad|iPod|Android|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    $('.en_up > div').css('display','none');
+  };
+});
+
+</script>
+
+<script>
+
+<!-- Размер окна (высота для просчёта мобильных браузеров) -->
+
+$(function() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+</script>
